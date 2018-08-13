@@ -1,23 +1,16 @@
 // batch analysis
-
-
-newdir = dir1 + "/Results/";
-File.makeDirectory(newdir);
-run("Subtract Background...", "rolling=12 light");
 imgName=getTitle();
-run("Colour Deconvolution", "vectors=[H DAB] show");
+run("Subtract Background...", "rolling=12 light");
+run("Colour Deconvolution", "vectors=[H DAB]");
 selectWindow(imgName + "-(Colour_3)");
-title = getTitle();
-print("title: " +title);
-saveAs("Tiff", newdir + "colour_3_" +imgName);
-close();
+close()
 selectWindow(imgName + "-(Colour_1)");
 title = getTitle();
 print("title: " +title);
-saveAs("Tiff", newdir +title);
 setAutoThreshold("Default");
-run("Threshold...");
-setThreshold(104, 205);
+//run("Threshold...");
+setAutoThreshold("Default");
+//setThreshold(0, 171);
 print("threshold");
 setOption("BlackBackground", false);
 run("Convert to Mask");
@@ -28,16 +21,14 @@ print("binary");
 run("Watershed");
 print("watershed");
 run("Analyze Particles...", "size=25-Infinity show=Outlines display exclude clear summarize");
-print("analysis");
-saveAs("Tiff", newdir +imgName +"OutlineCount_H");
-close();
+print("H_analysis");
 selectWindow(imgName + "-(Colour_2)");
 title = getTitle();
 print("title: " +title);
-saveAs("Tiff", newdir +title);
 setAutoThreshold("Default");
-run("Threshold...");
+//run("Threshold...");
 setThreshold(104, 205);
+run("Close");
 print("threshold");
 setOption("BlackBackground", false);
 run("Convert to Mask");
@@ -48,7 +39,5 @@ print("binary");
 run("Watershed");
 print("watershed");
 run("Analyze Particles...", "size=25-Infinity show=Outlines display exclude clear summarize");
-print("analysis");
-saveAs("Tiff", newdir +imgName +"OutlineCount_DAB");
-close();
-saveAs("Results", newdir +imgName +"_summary");
+print("DAB_analysis");
+
