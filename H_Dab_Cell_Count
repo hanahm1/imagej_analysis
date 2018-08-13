@@ -4,41 +4,81 @@ File.makeDirectory(newdir);
 list = getFileList(dir1);
 setBatchMode(true);
 for (i=0; i<list.length; i++) {
-showProgress(i+1, list.length);
-open(dir1+list[i]);
-run("Subtract Background...", "rolling=12 light");
-imgName=getTitle();
-run("Colour Deconvolution", "vectors=[H DAB] show");
-selectWindow(imgName + "-(Colour_3)");
-title = getTitle();
-print("title: " +title);
-saveAs("Tiff", newdir + "colour_3_" +imgName);
-close();
-selectWindow(imgName + "-(Colour_1)");
-title = getTitle();
-print("title: " +title);
-saveAs("Tiff", newdir +title);
-close();
-selectWindow(imgName + "-(Colour_2)");
-title = getTitle();
-print("title: " +title);
-saveAs("Tiff", newdir +title);
-setAutoThreshold("Default");
-run("Threshold...");
-setThreshold(104, 205);
-print("threshold");
-setOption("BlackBackground", false);
-run("Convert to Mask");
-print("mask");
-run("Close");
-run("Make Binary");
-print("binary");
-run("Watershed");
-print("watershed");
-run("Analyze Particles...", "size=25-Infinity show=Outlines display exclude clear summarize");
-print("analysis");
-saveAs("Tiff", newdir +imgName +"OutlineCount");
-close();
-saveAs("Results", newdir +imgName +"summary.csv");
-close();
+	showProgress(i+1, list.length);
+	open(dir1+list[i]);
+	if (i<=list.length) {
+		imgName=getTitle();
+		selectWindow(imgName);
+		run("Subtract Background...", "rolling=12 light");
+		selectWindow(imgName);
+			saveAs("Tiff", newdir +imgName +"_background");
+			close(); //new
+		open(newdir +imgName +"_background.tif");
+		imgName=getTitle();
+		run("Colour Deconvolution", "vectors=[H DAB]");
+		selectWindow("Colour Deconvolution");
+			run("Close");
+		selectWindow(imgName + "-(Colour_3)");
+			close();
+		selectWindow(imgName + "-(Colour_2)");
+			saveAs("Tiff", newdir +imgName +"_DAB");
+		open(newdir +imgName +"_DAB.tif");
+			selectWindow(imgName + "_DAB.tif");
+			setAutoThreshold("Default");
+			//run("Threshold...");
+			setThreshold(104, 205);
+			//setThreshold(104, 205);
+			setOption("BlackBackground", false);
+			run("Convert to Mask");
+			run("Close");
+			run("Make Binary");
+			run("Watershed");
+			saveAs("Tiff", newdir +imgName +"_DAB_an");
+			run("Analyze Particles...", "size=25-Infinity show=Outlines display exclude clear summarize add");
+		selectWindow("Drawing of " +imgName +"_DAB_an.tif");
+			saveAs("Tiff", newdir +imgName +"_Draw_DAB");
+			close();
+		open(newdir +imgName);
+		selectWindow(imgName);
+			run("From ROI Manager");
+			run("Overlay Options...", "stroke=none width=0 fill=none set");
+			run("Flatten");
+			saveAs("Tiff", newdir +imgName +"DAB_outline");
+			run("Close");
+		selectWindow(imgName +"_DAB_an.tif");
+			close();
+		selectWindow(imgName + "-(Colour_1)");
+			saveAs("Tiff", newdir +imgName +"_Hemo");
+		open(newdir +imgName +"_Hemo.tif");
+		selectWindow(imgName + "_Hemo.tif");
+			setAutoThreshold("Default");
+			//run("Threshold...");
+			run("Close");
+			//setThreshold(0, 171);
+			run("Make Binary", "thresholded remaining black");
+			run("Watershed");
+			saveAs("Tiff", newdir +imgName +"_Hemo_an");
+			run("Analyze Particles...", "size=25-Infinity show=Outlines display exclude clear summarize");
+			saveAs("Tiff", newdir +imgName +"_hemo_draw");
+			close();
+			print("hemo draw");
+		selectWindow("Results");
+			run("Close");
+			print("results closed");
+		run("Close");
+		run("Close");
+    	while (nImages>0) { 
+       		selectImage(nImages); 
+       		close(); 
+       		print("all windows");
+		}
+
+	}
 }
+
+selectWindow("Summary");
+	saveAs("Results", newdir +imgName +"_summary.csv");
+	run("Close");
+
+
+
