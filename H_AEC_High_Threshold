@@ -1,0 +1,69 @@
+dir1 = getDirectory("Choose Source Directory");
+newdir = dir1 + "/Results-HT/";
+File.makeDirectory(newdir);
+list = getFileList(dir1);
+setBatchMode(true);
+for (i=0; i<list.length; i++) {
+	showProgress(i+1, list.length);
+	open(dir1+list[i]);
+	if (i<=list.length) {
+		imgName=getTitle();
+		selectWindow(imgName);
+		run("Subtract Background...", "rolling=12 light");
+		selectWindow(imgName);
+			saveAs("Tiff", newdir +imgName +"_background");
+			close(); //new
+		open(newdir +imgName +"_background.tif");
+		imgName=getTitle();
+		run("Colour Deconvolution", "vectors=[H AEC]");
+		selectWindow("Colour Deconvolution");
+			run("Close");
+		selectWindow(imgName + "-(Colour_3)");
+			close();
+		selectWindow(imgName + "-(Colour_2)");
+			saveAs("Tiff", newdir +imgName +"_DAB");
+		open(newdir +imgName +"_DAB.tif");
+			selectWindow(imgName + "_DAB.tif");
+			setAutoThreshold("Default");
+			run("Threshold...");
+			setThreshold(13, 128);
+			//setThreshold(13, 128);
+			setOption("BlackBackground", false);
+			run("Convert to Mask");
+			run("Close");
+			run("Make Binary");
+			run("Watershed");
+			run("Analyze Particles...", "size=25-Infinity circularity=0.25-1.00 show=Outlines display exclude clear summarize add");
+		open(newdir +imgName);
+		selectWindow(imgName);
+			run("From ROI Manager");
+			run("Overlay Options...", "stroke=none width=0 fill=none set");
+			run("Flatten");
+			saveAs("Tiff", newdir +imgName +"DAB_outline");
+			run("Close");
+		selectWindow(imgName + "-(Colour_1)");
+			saveAs("Tiff", newdir +imgName +"_Hemo");
+		open(newdir +imgName +"_Hemo.tif");
+		selectWindow(imgName + "_Hemo.tif");
+			setAutoThreshold("Default");
+			run("Close");
+			run("Make Binary", "thresholded remaining black");
+			run("Watershed");
+			run("Analyze Particles...", "size=25-Infinity circularity=0.25-1.00 show=Outlines display exclude clear summarize");
+			close();
+			print("hemo draw");
+		selectWindow("Results");
+			run("Close");
+			print("results closed");
+		run("Close");
+		run("Close");
+		run("Collect Garbage");
+		}
+	}
+	selectWindow("Summary");
+		saveAs("Results", newdir +imgName +"_summary.csv");
+		run("Close");
+		print("summary");
+
+
+
