@@ -21,9 +21,9 @@ for (i=0; i<list.length; i++) {
 		selectWindow(imgName + "-(Colour_3)");
 			close();
 		selectWindow(imgName + "-(Colour_2)");
-			saveAs("Tiff", newdir +imgName +"_DAB");
-		open(newdir +imgName +"_DAB.tif");
-			selectWindow(imgName + "_DAB.tif");
+			saveAs("Tiff", newdir +imgName +"_AEC");
+		open(newdir +imgName +"_AEC.tif");
+			selectWindow(imgName + "_AEC.tif");
 			setAutoThreshold("Default");
 			run("Threshold...");
 			setThreshold(13, 128);
@@ -39,7 +39,7 @@ for (i=0; i<list.length; i++) {
 			run("From ROI Manager");
 			run("Overlay Options...", "stroke=none width=0 fill=none set");
 			run("Flatten");
-			saveAs("Tiff", newdir +imgName +"DAB_outline");
+			saveAs("Tiff", newdir +imgName +"AEC_outline");
 			run("Close");
 		selectWindow(imgName + "-(Colour_1)");
 			saveAs("Tiff", newdir +imgName +"_Hemo");
