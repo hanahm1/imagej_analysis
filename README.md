@@ -1,5 +1,7 @@
 # imagej_analysis
 
+https://zenodo.org/badge/DOI/10.5281/zenodo.2537196.svg
+
 Program: FIJI (a life science verison of ImageJ)
 
 Immunohistochemistry on preserved tissues stains "positive" cells with a specific antibody/color while the "negative" cells are counterstained with another, very different color. In order to analyze positive vs. negative cells, we need to separate the different colors then prepare the pictures for computer analysis. 
