@@ -1,6 +1,6 @@
 # imagej_analysis
 
-https://zenodo.org/badge/DOI/10.5281/zenodo.2537196.svg
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.2537196.svg)](http://dx.doi.org/10.5281/zenodo.2537196)]
 
 Program: FIJI (a life science verison of ImageJ)
 
