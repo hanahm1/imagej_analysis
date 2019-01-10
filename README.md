@@ -1,6 +1,8 @@
 # imagej_analysis
 
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.2537196.svg)](http://dx.doi.org/10.5281/zenodo.2537196)]
+Please cite this macro using the doi below
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.2537196.svg)](http://dx.doi.org/10.5281/zenodo.2537196)
 
 Program: FIJI (a life science verison of ImageJ)
 
